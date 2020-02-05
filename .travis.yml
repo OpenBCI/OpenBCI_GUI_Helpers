@@ -21,6 +21,9 @@ addons:
   apt:
     packages:
       - maven
+      - python3
+      - python3-setuptools
+      - python3-pip
 
 install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
