@@ -46,7 +46,7 @@ after_success:
       aws s3 cp $TRAVIS_BUILD_DIR/java-package/openbci_gui_helpers/src/main/resources/ s3://openbci-gui-helpers/$TRAVIS_COMMIT/$TRAVIS_OS_NAME --recursive ;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      aws s3 cp $TRAVIS_BUILD_DIR/installed/java-package/openbci_gui_helpers/src/main/resources/ s3://openbci-gui-helpers/$TRAVIS_COMMIT/$TRAVIS_OS_NAME --recursive ;
+      aws s3 cp $TRAVIS_BUILD_DIR/java-package/openbci_gui_helpers/src/main/resources/ s3://openbci-gui-helpers/$TRAVIS_COMMIT/$TRAVIS_OS_NAME --recursive ;
     fi
   # notify that everything is ok
   - echo success > ${TRAVIS_OS_NAME}_success && aws s3 cp ${TRAVIS_OS_NAME}_success s3://openbci-gui-helpers/$TRAVIS_COMMIT/
