@@ -1,0 +1,4 @@
+[submodule "third_party/ssdp-client/ssdp-client"]
+	path = third_party/ssdp-client/ssdp-client
+	url = https://github.com/vmichalak/ssdp-client
+	branch = master
