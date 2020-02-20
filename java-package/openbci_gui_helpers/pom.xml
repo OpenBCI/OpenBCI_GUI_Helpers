@@ -53,7 +53,7 @@
 
     <resources>
       <resource>
-        <targetPath>${project.build.outputDirectory}/com/openbci</targetPath>
+        <targetPath>${project.build.outputDirectory}/openbci_gui_helpers</targetPath>
         <filtering>false</filtering>
         <directory>${basedir}/src/main/resources</directory>
         <includes>
