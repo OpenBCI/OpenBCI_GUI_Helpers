@@ -1,4 +1,4 @@
-package com.openbci;
+package openbci_gui_helpers;
 
 import java.io.File;
 import java.io.IOException;

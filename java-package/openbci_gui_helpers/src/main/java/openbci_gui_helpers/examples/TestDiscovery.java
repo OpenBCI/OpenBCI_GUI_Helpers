@@ -1,9 +1,9 @@
-package com.openbci.examples;
+package openbci_gui_helpers.examples;
 
 import java.util.Map;
 
-import com.openbci.GUIHelper;
-import com.openbci.GanglionError;
+import openbci_gui_helpers.GUIHelper;
+import openbci_gui_helpers.GanglionError;
 
 public class TestDiscovery
 {

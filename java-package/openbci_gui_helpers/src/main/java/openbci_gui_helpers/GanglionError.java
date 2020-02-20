@@ -1,4 +1,4 @@
-package com.openbci;
+package openbci_gui_helpers;
 
 public class GanglionError extends Exception
 {
@@ -10,7 +10,7 @@ public class GanglionError extends Exception
 
     public GanglionError (String message, int ec)
     {
-        super (message + ":" + com.openbci.GanglionExitCodes.string_from_code (ec));
+        super (message + ":" + openbci_gui_helpers.GanglionExitCodes.string_from_code (ec));
         exit_code = ec;
         msg = message;
     }

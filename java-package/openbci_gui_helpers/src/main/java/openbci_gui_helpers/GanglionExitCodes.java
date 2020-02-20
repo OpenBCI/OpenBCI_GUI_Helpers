@@ -1,4 +1,4 @@
-package com.openbci;
+package openbci_gui_helpers;
 
 import java.util.HashMap;
 import java.util.Map;
