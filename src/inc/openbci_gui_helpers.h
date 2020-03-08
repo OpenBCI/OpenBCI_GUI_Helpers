@@ -15,7 +15,9 @@ namespace GanglionDetails
         STATUS_OK = 0,
         PORT_OPEN_ERROR,
         GENERAL_ERROR,
-        SYNC_ERROR
+        SYNC_ERROR,
+        SEND_ERROR,
+        RECV_ERROR
     } GanglionScanExitCodes;
 }
 
@@ -26,6 +28,7 @@ extern "C"
 
     SHARED_EXPORT int CALLING_CONVENTION scan_for_ganglions (
         char *serial_port, int timeout_sec, char *output, int *output_len);
+    SHARED_EXPORT int CALLING_CONVENTION scan_for_wifi (char *device_info, int *len);
 
 #ifdef __cplusplus
 }

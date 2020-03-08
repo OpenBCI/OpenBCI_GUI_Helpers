@@ -1,16 +1,19 @@
 package openbci_gui_helpers.examples;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
-import com.vmichalak.protocol.ssdp.Device;
-import com.vmichalak.protocol.ssdp.SSDPClient;
+import openbci_gui_helpers.GUIHelper;
+import openbci_gui_helpers.GanglionError;
+import openbci_gui_helpers.WIFIInfo;
 
 public class TestWifiDiscovery
 {
-    public static void main (String[] args) throws IOException
+    public static void main (String[] args) throws GanglionError
     {
-        List<Device> devices = SSDPClient.discover (3000, "urn:schemas-upnp-org:device:Basic:1");
-        System.out.println (devices.size () + " devices found");
+        Map<String, WIFIInfo> map = GUIHelper.scan_for_wifi (10);
+        for (Map.Entry<String, WIFIInfo> entry : map.entrySet ())
+        {
+            System.out.println ("Key = " + entry.getKey () + ", Value = " + entry.getValue ());
+        }
     }
 }

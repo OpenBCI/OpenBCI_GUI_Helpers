@@ -9,7 +9,9 @@ public enum GanglionExitCodes
     STATUS_OK (0),
     PORT_OPEN_ERROR (1),
     GENERAL_ERROR (2),
-    SYNC_ERROR (3);
+    SYNC_ERROR (3),
+    SEND_ERROR (4),
+    RECV_ERROR (5);
 
     private final int exit_code;
     private static final Map<Integer, GanglionExitCodes> ec_map = new HashMap<Integer, GanglionExitCodes> ();

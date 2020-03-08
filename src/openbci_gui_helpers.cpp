@@ -6,6 +6,7 @@
 #include <string>
 
 #include "cmd_def.h"
+#include "multicast_client.h"
 #include "openbci_gui_helpers.h"
 #include "uart.h"
 
@@ -143,4 +144,34 @@ int scan_for_ganglions (char *serial_port, int timeout_sec, char *output_json, i
     ble_cmd_gap_end_procedure ();
     uart_close ();
     return res;
+}
+
+int scan_for_wifi (char *device_info, int *len)
+{
+    MultiCastClient socket ("239.255.255.250", 1900);
+    if (socket.init () != (int)MultiCastReturnCodes::STATUS_OK)
+    {
+        return (int)GanglionDetails::GanglionScanExitCodes::PORT_OPEN_ERROR;
+    }
+
+    char search[1024] = "\0";
+    snprintf (search, 1024,
+        "M-SEARCH * HTTP/1.1\r\nHOST: %s:%d\r\nST: %s\r\nMAN: \"ssdp:discover\"\r\nMX: 3\r\n\r\n",
+        "239.255.255.250", 1900, "urn:schemas-upnp-org:device:Basic:1");
+    int res = socket.send ((void *)search, strlen (search));
+    if (res == -1)
+    {
+        socket.close ();
+        return (int)GanglionDetails::GanglionScanExitCodes::SEND_ERROR;
+    }
+
+    res = socket.recv (device_info, 1024);
+    if (res != 1024)
+    {
+        socket.close ();
+        return (int)GanglionDetails::GanglionScanExitCodes::RECV_ERROR;
+    }
+    *len = 1024;
+    socket.close ();
+    return (int)GanglionDetails::GanglionScanExitCodes::STATUS_OK;
 }
