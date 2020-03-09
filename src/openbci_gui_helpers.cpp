@@ -154,10 +154,8 @@ int scan_for_wifi (char *device_info, int *len)
         return (int)GanglionDetails::GanglionScanExitCodes::PORT_OPEN_ERROR;
     }
 
-    char search[1024] = "\0";
-    snprintf (search, 1024,
-        "M-SEARCH * HTTP/1.1\r\nHOST: %s:%d\r\nST: %s\r\nMAN: \"ssdp:discover\"\r\nMX: 3\r\n\r\n",
-        "239.255.255.250", 1900, "urn:schemas-upnp-org:device:Basic:1");
+    char *search = "M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: "
+                   "ssdp:discover\r\nST: urn:schemas-upnp-org:device:Basic:1\r\n\r\n";
     int res = socket.send ((void *)search, strlen (search));
     if (res == -1)
     {
