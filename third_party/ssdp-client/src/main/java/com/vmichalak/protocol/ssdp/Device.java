@@ -4,6 +4,10 @@ import java.net.DatagramPacket;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 /**
  * Represent a Device discovered by SSDP.
@@ -14,13 +18,15 @@ public class Device {
     private final String server;
     private final String serviceType;
     private final String usn;
+    private final String name;
 
-    public Device(String ip, String descriptionUrl, String server, String serviceType, String usn) {
+    public Device(String ip, String descriptionUrl, String server, String serviceType, String usn, String name) {
         this.ip = ip;
         this.descriptionUrl = descriptionUrl;
         this.server = server;
         this.serviceType = serviceType;
         this.usn = usn;
+        this.name = name;
     }
 
     /**
@@ -28,7 +34,7 @@ public class Device {
      * @param ssdpResult SSDP Discovery Response packet.
      * @return Device
      */
-    public static Device parse(DatagramPacket ssdpResult) {
+    public static Device parse(DatagramPacket ssdpResult) throws IOException {
         HashMap<String, String> headers = new HashMap<String, String>();
         Pattern pattern = Pattern.compile("(.*): (.*)");
 
@@ -41,12 +47,30 @@ public class Device {
             }
         }
 
+        String device_name = "";
+        URL url = new URL (headers.get("LOCATION"));
+        BufferedReader read = new BufferedReader (new InputStreamReader (url.openStream ()));
+        StringBuilder sb = new StringBuilder ();
+        String inline = "";
+        while ((inline = read.readLine ()) != null)
+        {
+            sb.append (inline);
+        }
+        String input = sb.toString ();
+        Pattern p = Pattern.compile ("<serialNumber>(.*)</serialNumber>");
+        Matcher matcher = p.matcher (input);
+        if (matcher.find ())
+        {
+            device_name = matcher.group(1);
+        }
+
         return new Device(
                 ssdpResult.getAddress().getHostAddress(),
                 headers.get("LOCATION"),
                 headers.get("SERVER"),
                 headers.get("ST"),
-                headers.get("USN"));
+                headers.get("USN"),
+                device_name);
     }
 
     public String getIPAddress() {
@@ -67,6 +91,10 @@ public class Device {
 
     public String getUSN() {
         return usn;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
