@@ -54,7 +54,6 @@ set (GANGLION_SOURCE_LIB
     ${CMAKE_HOME_DIRECTORY}/src/stubs.cpp
     ${CMAKE_HOME_DIRECTORY}/src/uart.cpp
     ${CMAKE_HOME_DIRECTORY}/src/openbci_gui_helpers.cpp
-    ${CMAKE_HOME_DIRECTORY}/src/multicast_client.cpp
 )
 
 add_library (${GANGLION_LIB} SHARED ${GANGLION_SOURCE_LIB})

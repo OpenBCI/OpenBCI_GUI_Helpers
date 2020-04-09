@@ -22,8 +22,6 @@ public class GUIHelper
     private interface DllInterface extends Library
     {
         int scan_for_ganglions (String serial_port, int timeout_sec, byte[] output, int[] output_len);
-
-        int scan_for_wifi (byte[] device_info, int[] len);
     }
 
     private static DllInterface instance;
@@ -76,31 +74,6 @@ public class GUIHelper
         {
         }.getType ();
         Map<String, String> map = gson.fromJson (json, type);
-        return map;
-    }
-
-    public static Map<String, WIFIInfo> scan_for_wifi (int num_attempts) throws GanglionError
-    {
-        Map<String, WIFIInfo> map = new HashMap<String, WIFIInfo> ();
-        for (int i = 0; i < num_attempts; i++)
-        {
-            int[] len = new int[1];
-            byte[] output = new byte[2048];
-            int ec = instance.scan_for_wifi (output, len);
-            if (ec == GanglionExitCodes.RECV_ERROR.get_code ())
-            {
-                // no response, its not crucial
-                System.err.println ("recv error");
-                continue;
-            }
-            if (ec != GanglionExitCodes.STATUS_OK.get_code ())
-            {
-                throw new GanglionError ("Error in scan for wifi", ec);
-            }
-            String ssdp_response = new String (output, 0, len[0]);
-            System.out.println (ssdp_response);
-        }
-
         return map;
     }
 
