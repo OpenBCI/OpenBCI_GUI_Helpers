@@ -1,0 +1,15 @@
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/install/local.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/install/strip.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/simpleble-c.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/simpleble.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/edit_cache.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/rebuild_cache.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/list_install_components.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/CMakeFiles/install.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/install/strip.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/install/local.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/fmt.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/edit_cache.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/rebuild_cache.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/list_install_components.dir
+/mnt/d/workspace/brainflow/third_party/SimpleBLE/simpleble/build/libfmt/CMakeFiles/install.dir

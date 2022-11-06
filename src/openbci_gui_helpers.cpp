@@ -22,7 +22,7 @@ using json = nlohmann::json;
 namespace GanglionDetails
 {
     int exit_code = (int)GanglionScanExitCodes::STATUS_OK;
-    std::map<std::string, std::string> devices; // mac_addr, name
+    std::map<std::string, std::string> devices;
 
     void output (uint8 len1, uint8 *data1, uint16 len2, uint8 *data2)
     {
