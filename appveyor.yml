@@ -1,5 +1,5 @@
 image:
-- Visual Studio 2017
+- Visual Studio 2019
 
 stack: python 3
 
@@ -23,7 +23,7 @@ init:
   - cmd: set JAVA_HOME=C:\Program Files\Java\jdk1.8.0
 
 install:
-  - mkdir %APPVEYOR_BUILD_FOLDER%\build64 && cd %APPVEYOR_BUILD_FOLDER%\build64 && cmake -G "Visual Studio 15 2017 Win64" -DCMAKE_SYSTEM_VERSION=8.1 -DCMAKE_INSTALL_PREFIX=..\installed64\ .. && cmake --build . --config Release > build64_stdout.txt
+  - mkdir %APPVEYOR_BUILD_FOLDER%\build64 && cd %APPVEYOR_BUILD_FOLDER%\build64 && cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_SYSTEM_VERSION=10.0.19041.0 -DCMAKE_INSTALL_PREFIX=..\installed64\ .. && cmake --build . --config Release > build64_stdout.txt
   # mvn package for java
   - cd %APPVEYOR_BUILD_FOLDER%\java-package\openbci_gui_helpers && mvn package > maven_package_stdout.txt
 deploy_script:
