@@ -31,6 +31,10 @@ int scan_for_ganglions (int timeout_sec, char *output_json, int *output_len)
             {
                 devices[identifier] = mac_address;
             }
+            else if (strncmp (identifier.c_str (), "Simblee", 7) == 0)
+            {
+                devices[identifier] = mac_address;
+            }
         });
 
     adapter_list[0].scan_for (timeout_sec * 1000);

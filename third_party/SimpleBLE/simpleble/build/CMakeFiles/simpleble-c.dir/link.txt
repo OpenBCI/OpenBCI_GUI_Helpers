@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -shared -Wl,-soname,libsimpleble-c.so -o /mnt/d/workspace/brainflow/compiled/libsimpleble-c.so CMakeFiles/simpleble-c.dir/src_c/simpleble.cpp.o CMakeFiles/simpleble-c.dir/src_c/adapter.cpp.o CMakeFiles/simpleble-c.dir/src_c/peripheral.cpp.o CMakeFiles/simpleble-c.dir/src_c/logging.cpp.o  lib/libsimpleble.a -lpthread /usr/lib/x86_64-linux-gnu/libdbus-1.so 

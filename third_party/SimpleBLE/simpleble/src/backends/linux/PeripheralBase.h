@@ -1,28 +1,26 @@
 #pragma once
 
-#include <cstdint>
-#include <functional>
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include <simpleble/export.h>
-
 #include <simpleble/Exceptions.h>
 #include <simpleble/Service.h>
 #include <simpleble/Types.h>
 
+#include <simplebluez/Adapter.h>
+#include <simplebluez/Characteristic.h>
+#include <simplebluez/Device.h>
+
+#include <kvn_safe_callback.hpp>
+
+#include <atomic>
+#include <condition_variable>
+#include <memory>
+
 namespace SimpleBLE {
 
-class PeripheralBase;
-
-class SIMPLEBLE_EXPORT Peripheral {
+class PeripheralBase {
   public:
-    Peripheral() = default;
-    virtual ~Peripheral() = default;
+    PeripheralBase(std::shared_ptr<SimpleBluez::Device> device, std::shared_ptr<SimpleBluez::Adapter> adapter);
+    virtual ~PeripheralBase();
 
-    bool initialized() const;
     void* underlying() const;
 
     std::string identifier();
@@ -37,13 +35,8 @@ class SIMPLEBLE_EXPORT Peripheral {
     bool is_paired();
     void unpair();
 
-    /**
-     * @brief Provides a list of all services that are available on the peripheral.
-     *
-     * @note If the peripheral is not connected, it will return a list of services
-     *       that were advertised by the device.
-     */
     std::vector<Service> services();
+    std::vector<Service> advertised_services();
     std::map<uint16_t, ByteArray> manufacturer_data();
 
     // clang-format off
@@ -61,8 +54,31 @@ class SIMPLEBLE_EXPORT Peripheral {
     void set_callback_on_connected(std::function<void()> on_connected);
     void set_callback_on_disconnected(std::function<void()> on_disconnected);
 
-  protected:
-    std::shared_ptr<PeripheralBase> internal_;
+  private:
+    std::atomic_bool battery_emulation_required_{false};
+
+    std::shared_ptr<SimpleBluez::Adapter> adapter_;
+    std::shared_ptr<SimpleBluez::Device> device_;
+
+    std::condition_variable connection_cv_;
+    std::mutex connection_mutex_;
+
+    std::condition_variable disconnection_cv_;
+    std::mutex disconnection_mutex_;
+
+    kvn::safe_callback<void()> callback_on_connected_;
+    kvn::safe_callback<void()> callback_on_disconnected_;
+
+    bool _attempt_connect();
+    bool _attempt_disconnect();
+    void _cleanup_characteristics() noexcept;
+
+    std::shared_ptr<SimpleBluez::Characteristic> _get_characteristic(BluetoothUUID const& service_uuid,
+                                                                     BluetoothUUID const& characteristic_uuid);
+
+    std::shared_ptr<SimpleBluez::Descriptor> _get_descriptor(BluetoothUUID const& service_uuid,
+                                                             BluetoothUUID const& characteristic_uuid,
+                                                             BluetoothUUID const& descriptor_uuid);
 };
 
 }  // namespace SimpleBLE

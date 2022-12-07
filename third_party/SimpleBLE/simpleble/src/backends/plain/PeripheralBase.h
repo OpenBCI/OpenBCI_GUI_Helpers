@@ -1,28 +1,23 @@
 #pragma once
 
-#include <cstdint>
-#include <functional>
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include <simpleble/export.h>
-
 #include <simpleble/Exceptions.h>
 #include <simpleble/Service.h>
 #include <simpleble/Types.h>
 
+#include <kvn_safe_callback.hpp>
+
+#include <atomic>
+#include <condition_variable>
+#include <map>
+#include <memory>
+
 namespace SimpleBLE {
 
-class PeripheralBase;
-
-class SIMPLEBLE_EXPORT Peripheral {
+class PeripheralBase {
   public:
-    Peripheral() = default;
-    virtual ~Peripheral() = default;
+    PeripheralBase();
+    virtual ~PeripheralBase();
 
-    bool initialized() const;
     void* underlying() const;
 
     std::string identifier();
@@ -37,13 +32,8 @@ class SIMPLEBLE_EXPORT Peripheral {
     bool is_paired();
     void unpair();
 
-    /**
-     * @brief Provides a list of all services that are available on the peripheral.
-     *
-     * @note If the peripheral is not connected, it will return a list of services
-     *       that were advertised by the device.
-     */
     std::vector<Service> services();
+    std::vector<Service> advertised_services();
     std::map<uint16_t, ByteArray> manufacturer_data();
 
     // clang-format off
@@ -61,8 +51,12 @@ class SIMPLEBLE_EXPORT Peripheral {
     void set_callback_on_connected(std::function<void()> on_connected);
     void set_callback_on_disconnected(std::function<void()> on_disconnected);
 
-  protected:
-    std::shared_ptr<PeripheralBase> internal_;
+  private:
+    std::atomic_bool connected_{false};
+    std::atomic_bool paired_{false};
+
+    kvn::safe_callback<void()> callback_on_connected_;
+    kvn::safe_callback<void()> callback_on_disconnected_;
 };
 
 }  // namespace SimpleBLE
