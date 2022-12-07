@@ -30,6 +30,9 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       docker pull dockcross/manylinux2014-x64:20210708-94745ff ;
     fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      brew install ninja ;
+    fi
 
 script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
