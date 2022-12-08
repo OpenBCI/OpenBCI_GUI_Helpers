@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.10)
 project (OpenBCI_GUI_Helpers)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (BRAINFLOW_VERSION 2.1.0)
 
@@ -51,6 +51,8 @@ endmacro ()
 # link msvc runtime statically
 configure_msvc_runtime ()
 
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/third_party/SimpleBLE/simpleble)
+
 SET (GANGLION_LIB "GanglionScan")
 set (GANGLION_SOURCE_LIB
     ${CMAKE_HOME_DIRECTORY}/src/callbacks.cpp
@@ -70,6 +72,36 @@ target_include_directories (${GANGLION_LIB} PUBLIC
 set_property (TARGET ${GANGLION_LIB} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 set_target_properties (${GANGLION_LIB}
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
+)
+
+SET (GANGLION_NATIVE_LIB "GanglionNativeScan")
+set (GANGLION_NATIVE_SOURCE_LIB
+    ${CMAKE_HOME_DIRECTORY}/src/openbci_gui_native_helpers.cpp
+)
+
+add_library (${GANGLION_NATIVE_LIB} SHARED ${GANGLION_NATIVE_SOURCE_LIB})
+
+target_include_directories (${GANGLION_NATIVE_LIB} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/src/inc>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/json>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/SimpleBLE/simpleble/include/simpleble>
+)
+
+target_link_libraries (${GANGLION_NATIVE_LIB} PRIVATE simpleble)
+
+set_property (TARGET ${GANGLION_NATIVE_LIB} PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+set_target_properties (${GANGLION_NATIVE_LIB}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/
     LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/java-package/openbci_gui_helpers/src/main/resources/

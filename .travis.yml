@@ -1,11 +1,11 @@
 sudo: required
-dist: xenial
+dist: jammy
 
 os:
   - linux
   - osx
 
-osx_image: xcode9.4
+osx_image: xcode14.1
 
 services:
   - docker
@@ -24,19 +24,23 @@ addons:
       - python3
       - python3-setuptools
       - python3-pip
+      - ninja-build
 
 install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-      docker pull dockcross/manylinux-x64 ;
+      docker pull dockcross/manylinux2014-x64:20210708-94745ff ;
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      brew install ninja ;
     fi
 
 script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-      docker run -e TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR -v $TRAVIS_BUILD_DIR:$TRAVIS_BUILD_DIR dockcross/manylinux-x64 /bin/bash -c "/opt/python/cp36-cp36m/bin/pip3.6 install cmake==3.13.0 && cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installed_docker -DCMAKE_BUILD_TYPE=Release .. && make" ;
+      docker run -e TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR -v $TRAVIS_BUILD_DIR:$TRAVIS_BUILD_DIR dockcross/manylinux2014-x64:20210708-94745ff /bin/bash -c "yum install -y bluez-libs-devel dbus-devel && /opt/python/cp36-cp36m/bin/pip3.6 install cmake==3.21.4 && cd $TRAVIS_BUILD_DIR && mkdir build && cd build && /opt/_internal/cpython-3.6.14/bin/cmake -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installed_docker -DCMAKE_BUILD_TYPE=Release .. && make" ;
     fi
   # build for mac
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installed -DCMAKE_BUILD_TYPE=Release .. && make ;
+      cd $TRAVIS_BUILD_DIR && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=$TRAVIS_BUILD_DIR/installed -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15 .. && ninja ;
     fi
   - cd $TRAVIS_BUILD_DIR && cd java-package/openbci_gui_helpers && mvn package
 

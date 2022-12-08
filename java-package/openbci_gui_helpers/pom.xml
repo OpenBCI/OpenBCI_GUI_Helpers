@@ -59,6 +59,9 @@
           <include>GanglionScan.dll</include>
           <include>libGanglionScan.so</include>
           <include>libGanglionScan.dylib</include>
+          <include>GanglionNativeScan.dll</include>
+          <include>libGanglionNativeScan.so</include>
+          <include>libGanglionNativeScan.dylib</include>
         </includes>
       </resource>
     </resources>
