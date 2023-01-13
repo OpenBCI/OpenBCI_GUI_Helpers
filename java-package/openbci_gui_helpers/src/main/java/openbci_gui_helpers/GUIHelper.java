@@ -47,8 +47,8 @@ public class GUIHelper
         unpack_from_jar (lib_name);
         unpack_from_jar (lib_native_name);
 
-        instance = (DllInterface) Native.loadLibrary (lib_name, DllInterface.class);
-        instance_native = (DllNativeInterface) Native.loadLibrary (lib_native_name, DllNativeInterface.class);
+        instance = (DllInterface) Native.load (new File (lib_name).getAbsolutePath (), DllInterface.class);
+        instance_native = (DllNativeInterface) Native.load (new File (lib_native_name).getAbsolutePath (), DllNativeInterface.class);
     }
 
     private static void unpack_from_jar (String lib_name)
