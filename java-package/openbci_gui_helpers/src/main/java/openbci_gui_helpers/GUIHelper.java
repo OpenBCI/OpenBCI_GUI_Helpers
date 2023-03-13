@@ -44,14 +44,14 @@ public class GUIHelper
         }
 
         // need to extract libraries from jar
-        unpack_from_jar (lib_name);
-        unpack_from_jar (lib_native_name);
+        String lib_path = unpack_from_jar (lib_name);
+        String lib_native_path = unpack_from_jar (lib_native_name);
 
-        instance = (DllInterface) Native.loadLibrary (lib_name, DllInterface.class);
-        instance_native = (DllNativeInterface) Native.loadLibrary (lib_native_name, DllNativeInterface.class);
+        instance = (DllInterface) Native.load (lib_path, DllInterface.class);
+        instance_native = (DllNativeInterface) Native.load (lib_native_path, DllNativeInterface.class);
     }
 
-    private static void unpack_from_jar (String lib_name)
+    private static String unpack_from_jar (String lib_name)
     {
         try
         {
@@ -60,9 +60,11 @@ public class GUIHelper
                 file.delete ();
             InputStream link = (GUIHelper.class.getResourceAsStream (lib_name));
             Files.copy (link, file.getAbsoluteFile ().toPath ());
+            return file.getAbsolutePath();
         } catch (Exception io)
         {
             System.err.println ("native library: " + lib_name + " is not found in jar file");
+            return "";
         }
     }
 
