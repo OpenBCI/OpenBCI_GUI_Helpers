@@ -57,25 +57,22 @@ public class GUIHelper
 
     private static String unpack_from_jar (String lib_name)
     {
+        File file = null;
+        InputStream link = null;
         try
         {
-            File file = new File (lib_name);
+            file = new File (lib_name);
             if (file.exists ())
                 file.delete ();
-            InputStream link = (GUIHelper.class.getResourceAsStream (lib_name));
-
-            String text = new BufferedReader(
-                new InputStreamReader(link, StandardCharsets.UTF_8))
-                    .lines()
-                    .collect(Collectors.joining("\n"));
-            System.err.println("inputStream: " + text);
-            System.err.println("file absolute path: " + file.getAbsoluteFile().toPath());
-
+            link = (GUIHelper.class.getResourceAsStream (lib_name));
             Files.copy (link, file.getAbsoluteFile ().toPath ());
             return file.getAbsolutePath();
         } catch (Exception io)
         {
+            io.printStackTrace ();
             System.err.println ("native library: " + lib_name + " is not found in jar file");
+            System.err.println("file absolute to path: " + file.getAbsoluteFile().toPath());
+            System.err.println("file get absolute path: " + file.getAbsolutePath());
             return "";
         }
     }
