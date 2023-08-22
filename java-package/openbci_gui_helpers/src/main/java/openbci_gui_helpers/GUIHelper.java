@@ -1,10 +1,14 @@
 package openbci_gui_helpers;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -59,6 +63,14 @@ public class GUIHelper
             if (file.exists ())
                 file.delete ();
             InputStream link = (GUIHelper.class.getResourceAsStream (lib_name));
+
+            String text = new BufferedReader(
+                new InputStreamReader(link, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+            System.err.println("inputStream: " + text);
+            System.err.println("file absolute path: " + file.getAbsoluteFile().toPath());
+
             Files.copy (link, file.getAbsoluteFile ().toPath ());
             return file.getAbsolutePath();
         } catch (Exception io)

@@ -19,8 +19,8 @@ clone_depth: 3
 build: off
 
 init:
-  - cmd: set PATH=%PY_DIR%;%PY_DIR%\Scripts;C:\Program Files\Java\jdk1.8.0\bin;%PATH%
-  - cmd: set JAVA_HOME=C:\Program Files\Java\jdk1.8.0
+  - cmd: set PATH=%PY_DIR%;%PY_DIR%\Scripts;C:\Program Files\Java\jdk17\bin;%PATH%
+  - cmd: set JAVA_HOME=C:\Program Files\Java\jdk17
 
 install:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build64 && cd %APPVEYOR_BUILD_FOLDER%\build64 && cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_SYSTEM_VERSION=10.0.19041.0 -DCMAKE_INSTALL_PREFIX=..\installed64\ .. && cmake --build . --config Release > build64_stdout.txt

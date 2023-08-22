@@ -6,16 +6,15 @@
 
   <groupId>openbci_gui_helpers</groupId>
   <artifactId>openbci_gui_helpers</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.1</version>
 
   <name>openbci_gui_helpers</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.openbci.com</url>
+  <url>https://github.com/OpenBCI/OpenBCI_GUI_Helpers</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
