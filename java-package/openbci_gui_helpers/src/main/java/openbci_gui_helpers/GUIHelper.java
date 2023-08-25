@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,7 @@ public class GUIHelper
 
     private static DllInterface instance;
     private static DllNativeInterface instance_native;
-    private static final String VERSION = "1.1.0";
+    private static final String VERSION = "1.2.0";
 
     static
     {
@@ -54,6 +56,19 @@ public class GUIHelper
         String lib_path = unpack_from_jar (lib_name);
         String lib_native_path = unpack_from_jar (lib_native_name);
 
+        /*
+        if (SystemUtils.IS_OS_MAC) {
+            String path = GUIHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            File jarFile = new File(path);
+            String jarDir = jarFile.getParentFile().getAbsolutePath();
+            lib_path = jarDir + File.separator + lib_name;
+            lib_native_path = jarDir + File.separator + lib_native_name;
+            System.out.println("jarDir: " + jarDir);
+            System.out.println("lib_path: " + lib_path);
+            System.out.println("lib_native_path: " + lib_native_path);
+        }
+        */
+
         instance = (DllInterface) Native.load (lib_path, DllInterface.class);
         instance_native = (DllNativeInterface) Native.load (lib_native_path, DllNativeInterface.class);
     }
@@ -68,7 +83,16 @@ public class GUIHelper
             if (file.exists ())
                 file.delete ();
             link = (GUIHelper.class.getResourceAsStream (lib_name));
-            Files.copy (link, file.getAbsoluteFile ().toPath ());
+            if (SystemUtils.IS_OS_MAC) {
+                String jarPath = GUIHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                File jarFile = new File(jarPath);
+                String libPathString = jarFile.getParentFile().getAbsolutePath() + File.separator + lib_name;
+                Path libPath = Paths.get(libPathString);
+                Files.copy (link, libPath);
+                return libPathString;
+            } else {
+                Files.copy (link, file.getAbsoluteFile ().toPath ());
+            }
             return file.getAbsolutePath();
         } catch (Exception io)
         {
@@ -76,6 +100,9 @@ public class GUIHelper
             System.err.println("native library: " + lib_name + " is not found in jar file");
             System.err.println("file absolute to path: " + file.getAbsoluteFile().toPath());
             System.err.println("file get absolute path: " + file.getAbsolutePath());
+            if (SystemUtils.IS_OS_MAC) {
+                return file.getAbsolutePath();
+            }
             return "";
         }
     }
