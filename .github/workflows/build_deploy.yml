@@ -93,12 +93,22 @@ jobs:
         cp -r windows-artifacts/* java-package/openbci_gui_helpers/src/main/resources/
         ls -l java-package/openbci_gui_helpers/src/main/resources/
     - name: Build Jar
+      id: build-jar
       run: |
         cd java-package/openbci_gui_helpers/
         mvn package
     - name: Upload Jar
+      id: upload-jar
       uses: actions/upload-artifact@v3
       with:
         name: jar-artifact
         path: java-package\openbci_gui_helpers\target\openbci_gui_helpers.jar
         retention-days: 30
+    # Remove dynamic libraries from artifacts if build and upload were successful
+    - uses: geekyeggo/delete-artifact@v2
+      if: steps.build-jar.outputs.exit_code == 0 && steps.upload-jar.outputs.exit_code == 0
+      with:
+          name: |
+              linux-artifacts
+              mac-artifacts
+              windows-artifacts
