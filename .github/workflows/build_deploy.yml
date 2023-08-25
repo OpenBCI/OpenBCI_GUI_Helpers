@@ -53,6 +53,26 @@ jobs:
       uses: actions/upload-artifact@v3
       if: steps.cmake-build.outputs.exit_code == 0
       with:
-        name: linux-artifacts
+        name: mac-artifacts
+        path: java-package/openbci_gui_helpers/src/main/resources/
+        retention-days: 1
+
+  Build-Windows:
+    runs-on: windows-2019
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Build using Cmake
+      id: cmake-build
+      run: |
+        mkdir build
+        cd build
+        cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_SYSTEM_VERSION=10.0.19041.0 -DCMAKE_INSTALL_PREFIX=..\installed64\ ..
+        cmake --build . --config Release
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: steps.cmake-build.outputs.exit_code == 0
+      with:
+        name: windows-artifacts
         path: java-package/openbci_gui_helpers/src/main/resources/
         retention-days: 1
