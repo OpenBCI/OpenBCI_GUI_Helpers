@@ -31,9 +31,12 @@ public class GUIHelper
 
     private static DllInterface instance;
     private static DllNativeInterface instance_native;
+    private static final String VERSION = "1.1.0";
 
     static
     {
+        System.out.println("OpenBCI_GUI_Helpers Version: " + VERSION);
+
         String lib_name = "libGanglionScan.so";
         String lib_native_name = "libGanglionNativeScan.so";
         if (SystemUtils.IS_OS_WINDOWS)
@@ -70,7 +73,7 @@ public class GUIHelper
         } catch (Exception io)
         {
             io.printStackTrace ();
-            System.err.println ("native library: " + lib_name + " is not found in jar file");
+            System.err.println("native library: " + lib_name + " is not found in jar file");
             System.err.println("file absolute to path: " + file.getAbsoluteFile().toPath());
             System.err.println("file get absolute path: " + file.getAbsolutePath());
             return "";
