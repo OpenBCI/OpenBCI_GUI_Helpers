@@ -12,30 +12,25 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Install Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        architecture: 'x64'
-        cache: 'pip'
     - name: Install Dependencies
       run: |
-        sudo apt-get -y install bluez libbluetooth-dev dbus
+        sudo apt-get -y install bluez libbluetooth-dev libdbus-1-dev
     - name: Build using Cmake
+      id: cmake-build
       run: |
         mkdir build
         cd build
         cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release ..
         make
-    - name: Package using Maven
-      id: maven-package
+    - name: Locate .so files
       run: |
-        cd $GITHUB_WORKSPACE/java-package/openbci_gui_helpers
-        mvn package
+        cd $GITHUB_WORKSPACE
+        find . -name "*.so*"
+        ls -l java-package/openbci_gui_helpers/src/main/resources/
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
-      if: steps.maven-package.outputs.exit_code == 0
+      if: steps.cmake-build.outputs.exit_code == 0
       with:
         name: linux-artifacts
-        path: $GITHUB_WORKSPACE/java-package/openbci_gui_helpers/src/main/resources/
+        path: java-package/openbci_gui_helpers/src/main/resources/
         retention-days: 1

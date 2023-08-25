@@ -1,7 +1,9 @@
 sudo: required
 dist: jammy
 
-enabled: false
+branches:
+  only:
+    - dont-build
 
 os:
   - linux
