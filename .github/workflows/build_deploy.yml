@@ -1,0 +1,41 @@
+name: Build and Deploy GUI Helpers Jar
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Build-Linux:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        architecture: 'x64'
+        cache: 'pip'
+    - name: Install Dependencies
+      run: |
+        yum install -y bluez-libs-devel dbus-devel
+    - name: Build using Cmake
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release ..
+        make
+    - name: Package using Maven
+      id: maven-package
+      run: |
+        cd $GITHUB_WORKSPACE/java-package/openbci_gui_helpers
+        mvn package
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: steps.maven-package.outputs.exit_code == 0
+      with:
+        name: linux-artifacts
+        path: $GITHUB_WORKSPACE/java-package/openbci_gui_helpers/src/main/resources/
+        retention-days: 1
