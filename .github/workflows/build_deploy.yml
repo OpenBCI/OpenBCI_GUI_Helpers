@@ -20,7 +20,7 @@ jobs:
         cache: 'pip'
     - name: Install Dependencies
       run: |
-        yum install -y bluez-libs-devel dbus-devel
+        sudo apt-get -y install bluez libbluetooth-dev dbus
     - name: Build using Cmake
       run: |
         mkdir build
