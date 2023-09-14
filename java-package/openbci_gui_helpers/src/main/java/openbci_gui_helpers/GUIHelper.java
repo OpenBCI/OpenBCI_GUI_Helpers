@@ -56,19 +56,6 @@ public class GUIHelper
         String lib_path = unpack_from_jar (lib_name);
         String lib_native_path = unpack_from_jar (lib_native_name);
 
-        /*
-        if (SystemUtils.IS_OS_MAC) {
-            String path = GUIHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            File jarFile = new File(path);
-            String jarDir = jarFile.getParentFile().getAbsolutePath();
-            lib_path = jarDir + File.separator + lib_name;
-            lib_native_path = jarDir + File.separator + lib_native_name;
-            System.out.println("jarDir: " + jarDir);
-            System.out.println("lib_path: " + lib_path);
-            System.out.println("lib_native_path: " + lib_native_path);
-        }
-        */
-
         instance = (DllInterface) Native.load (lib_path, DllInterface.class);
         instance_native = (DllNativeInterface) Native.load (lib_native_path, DllNativeInterface.class);
     }
