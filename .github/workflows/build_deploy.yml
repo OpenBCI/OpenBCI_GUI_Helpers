@@ -1,0 +1,113 @@
+name: Build and Deploy GUI Helpers Jar
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Build-Linux:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Dependencies
+      run: |
+        sudo apt-get -y install bluez libbluetooth-dev libdbus-1-dev
+    - name: Build using Cmake
+      id: cmake-build
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release ..
+        make
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: steps.cmake-build.outputs.exit_code == 0
+      with:
+        name: linux-artifacts
+        path: java-package/openbci_gui_helpers/src/main/resources/
+        retention-days: 1
+
+  Build-Mac:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+    - name: Install Dependencies
+      run: |
+        pip install ninja
+    - name: Build using Cmake
+      id: cmake-build
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15 ..
+        ninja
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: steps.cmake-build.outputs.exit_code == 0
+      with:
+        name: mac-artifacts
+        path: java-package/openbci_gui_helpers/src/main/resources/
+        retention-days: 1
+
+  Build-Windows:
+    runs-on: windows-2019
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Build using Cmake
+      id: cmake-build
+      run: |
+        mkdir build
+        cd build
+        cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_SYSTEM_VERSION=10.0.19041.0 -DCMAKE_INSTALL_PREFIX=..\installed64\ ..
+        cmake --build . --config Release
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      if: steps.cmake-build.outputs.exit_code == 0
+      with:
+        name: windows-artifacts
+        path: java-package/openbci_gui_helpers/src/main/resources/
+        retention-days: 1
+
+  Package-And-Upload:
+    runs-on: windows-2019
+    needs: [Build-Linux, Build-Mac, Build-Windows]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+    - name: Copy Dynamic Libraries
+      run: |
+        mkdir -p java-package/openbci_gui_helpers/src/main/resources/
+        cp -r linux-artifacts/* java-package/openbci_gui_helpers/src/main/resources/
+        cp -r mac-artifacts/* java-package/openbci_gui_helpers/src/main/resources/
+        cp -r windows-artifacts/* java-package/openbci_gui_helpers/src/main/resources/
+        ls -l java-package/openbci_gui_helpers/src/main/resources/
+    - name: Build Jar
+      id: build-jar
+      run: |
+        cd java-package/openbci_gui_helpers/
+        mvn package
+    - name: Upload Jar
+      id: upload-jar
+      uses: actions/upload-artifact@v3
+      with:
+        name: jar-artifact
+        path: java-package\openbci_gui_helpers\target\openbci_gui_helpers.jar
+        retention-days: 30
+    # Remove dynamic libraries from artifacts if build and upload were successful
+    - uses: geekyeggo/delete-artifact@v2
+      if: steps.build-jar.outputs.exit_code == 0 && steps.upload-jar.outputs.exit_code == 0
+      with:
+          name: |
+              linux-artifacts
+              windows-artifacts

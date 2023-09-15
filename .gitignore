@@ -339,6 +339,7 @@ ASALocalRun/
 .vscode/
 
 build*
+!build_deploy.yml
 installed*
 compiled/
 python/flowcat.egg-info/
@@ -361,3 +362,8 @@ matlab-package/lib/brainflow_boards.json
 python-package/brainflow/lib/brainflow_boards.json
 python-package/brainflow/lib/libBoardController.dylib
 python-package/brainflow/lib/libDataHandler.dylib
+java-package/openbci_gui_helpers/target/classes/openbci_gui_helpers/GUIHelper.class
+java-package/openbci_gui_helpers/target/classes/openbci_gui_helpers/GUIHelper$DllInterface.class
+java-package/openbci_gui_helpers/target/classes/openbci_gui_helpers/GUIHelper$DllNativeInterface.class
+java-package/openbci_gui_helpers/target/classes/openbci_gui_helpers/examples/TestDiscovery.class
+java-package/openbci_gui_helpers/target/classes/openbci_gui_helpers/examples/TestNativeDiscovery.class
