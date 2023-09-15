@@ -33,7 +33,7 @@ public class GUIHelper
 
     private static DllInterface instance;
     private static DllNativeInterface instance_native;
-    private static final String VERSION = "1.2.0";
+    private static final String VERSION = "2.0.0";
 
     static
     {
