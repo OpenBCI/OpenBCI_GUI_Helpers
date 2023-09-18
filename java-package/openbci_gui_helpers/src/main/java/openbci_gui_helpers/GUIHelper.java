@@ -33,7 +33,7 @@ public class GUIHelper
 
     private static DllInterface instance;
     private static DllNativeInterface instance_native;
-    private static final String VERSION = "2.0.0";
+    private static final String VERSION = "2.0.1";
 
     static
     {
@@ -74,8 +74,6 @@ public class GUIHelper
                 String jarPath = GUIHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                 File jarFile = new File(jarPath);
                 String libPathString = jarFile.getParentFile().getAbsolutePath() + File.separator + lib_name;
-                Path libPath = Paths.get(libPathString);
-                Files.copy (link, libPath);
                 return libPathString;
             } else {
                 Files.copy (link, file.getAbsoluteFile ().toPath ());
@@ -87,9 +85,6 @@ public class GUIHelper
             System.err.println("native library: " + lib_name + " is not found in jar file");
             System.err.println("file absolute to path: " + file.getAbsoluteFile().toPath());
             System.err.println("file get absolute path: " + file.getAbsolutePath());
-            if (SystemUtils.IS_OS_MAC) {
-                return file.getAbsolutePath();
-            }
             return "";
         }
     }
