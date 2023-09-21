@@ -90,13 +90,13 @@ set_target_properties(${GANGLION_LIB}
 
 SET(GANGLION_NATIVE_LIB "GanglionNativeScan")
 set(GANGLION_NATIVE_SOURCE_LIB
-    ${CMAKE_HOME_DIRECTORY}/modules/openbci_gui_native_helpers.cpp
+    ${CMAKE_HOME_DIRECTORY}/modules/native-ble/src/openbci_gui_native_helpers.cpp
 )
 
 add_library(${GANGLION_NATIVE_LIB} SHARED ${GANGLION_NATIVE_SOURCE_LIB})
 
 target_include_directories(${GANGLION_NATIVE_LIB} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/modules/inc>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/modules/native-ble/include>
     $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/json>
     $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/SimpleBLE/simpleble/include/simpleble>
 )
