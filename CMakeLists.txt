@@ -55,7 +55,7 @@ endmacro()
 # link msvc runtime statically
 configure_msvc_runtime()
 
-add_subdirectory(${CMAKE_HOME_DIRECTORY}/third_party/SimpleBLE/simpleble)
+add_subdirectory(${CMAKE_HOME_DIRECTORY}/3rdparty/SimpleBLE/simpleble)
 
 SET(GANGLION_LIB "GanglionScan")
 set(GANGLION_SOURCE_LIB
@@ -69,7 +69,7 @@ set(GANGLION_SOURCE_LIB
 add_library(${GANGLION_LIB} SHARED ${GANGLION_SOURCE_LIB})
 
 target_include_directories(${GANGLION_LIB} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/json>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/3rdparty/json>
     $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/modules/bglib/include>
 )
 
@@ -97,8 +97,8 @@ add_library(${GANGLION_NATIVE_LIB} SHARED ${GANGLION_NATIVE_SOURCE_LIB})
 
 target_include_directories(${GANGLION_NATIVE_LIB} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/modules/native-ble/include>
-    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/json>
-    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/third_party/SimpleBLE/simpleble/include/simpleble>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/3rdparty/json>
+    $<BUILD_INTERFACE:${CMAKE_HOME_DIRECTORY}/3rdparty/SimpleBLE/simpleble/include/simpleble>
 )
 
 target_link_libraries(${GANGLION_NATIVE_LIB} PRIVATE simpleble)
