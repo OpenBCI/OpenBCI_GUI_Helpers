@@ -2,6 +2,7 @@ SET(GANGLION_LIB "GanglionScan")
 
 add_library(
     ${GANGLION_LIB} SHARED
+    modules/common/src/serialization.cpp
     modules/bglib/src/callbacks.cpp
     modules/bglib/src/cmd_def.cpp
     modules/bglib/src/stubs.cpp
@@ -13,6 +14,7 @@ target_include_directories(
     ${GANGLION_LIB} PUBLIC
     3rdparty/json
     modules/bglib/include
+    modules/common/include
 )
 
 set_property(TARGET ${GANGLION_LIB} PROPERTY POSITION_INDEPENDENT_CODE ON)

@@ -1,19 +1,21 @@
 #include <ctype.h>
 #include <iomanip>
-#include <map>
+#include <list>
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
 
+
 #include "cmd_def.h"
 #include "openbci_gui_helpers.h"
+#include "serialization.h"
 
 
 namespace GanglionDetails
 {
     extern int exit_code;
-    extern std::map<std::string, std::string> devices;
+    extern std::list<GanglionDevice> devices;
 }
 
 void ble_evt_gap_scan_response (const struct ble_msg_gap_scan_response_evt_t *msg)
@@ -57,7 +59,15 @@ void ble_evt_gap_scan_response (const struct ble_msg_gap_scan_response_evt_t *ms
                     mac_addr << ":";
                 }
             }
-            GanglionDetails::devices[std::string (name)] = mac_addr.str ();
+
+            uint8_t firmware = strstr (name, "anglion 1.3") == NULL ? 2 : 3;
+
+            GanglionDevice device;
+            device.identifier = name;
+            device.mac_address = mac_addr.str ();
+            device.firmware_version = firmware;
+
+            GanglionDetails::devices.push_back (device);
             GanglionDetails::exit_code = (int)GanglionDetails::GanglionScanExitCodes::STATUS_OK;
         }
     }

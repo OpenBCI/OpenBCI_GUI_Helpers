@@ -1,12 +1,13 @@
 #include <chrono>
 #include <ctype.h>
-#include <map>
+#include <list>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
 
 #include "cmd_def.h"
 #include "openbci_gui_helpers.h"
+#include "serialization.h"
 #include "uart.h"
 
 #ifdef _WIN32
@@ -15,14 +16,12 @@
 #include <unistd.h>
 #endif
 
-#include "json.hpp"
-
 using json = nlohmann::json;
 
 namespace GanglionDetails
 {
     int exit_code = (int)GanglionScanExitCodes::STATUS_OK;
-    std::map<std::string, std::string> devices;
+    std::list<GanglionDevice> devices;
 
     void output (uint8 len1, uint8 *data1, uint16 len2, uint8 *data2)
     {
@@ -138,7 +137,7 @@ int scan_for_ganglions (char *serial_port, int timeout_sec, char *output_json, i
         json result (GanglionDetails::devices);
         std::string s = result.dump ();
         strcpy (output_json, s.c_str ());
-        *output_len = s.length ();
+        *output_len = (int)s.length ();
     }
     ble_cmd_gap_end_procedure ();
     uart_close ();

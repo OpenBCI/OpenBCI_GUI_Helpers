@@ -2,12 +2,14 @@ SET(OPENBCI_GANGLION_NATIVE_LIB "GanglionNativeScan")
 
 add_library(
     ${OPENBCI_GANGLION_NATIVE_LIB} SHARED
+    modules/common/src/serialization.cpp
     modules/native-ble/src/openbci_gui_native_helpers.cpp
 )
 
 target_include_directories(
     ${OPENBCI_GANGLION_NATIVE_LIB} PUBLIC
     modules/native-ble/include
+    modules/common/include
     3rdparty/json
     3rdparty/SimpleBLE/simpleble/include/simpleble
 )
