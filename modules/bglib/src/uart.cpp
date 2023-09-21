@@ -92,7 +92,7 @@ void uart_list_devices ()
     return;
 }
 
-int uart_find_serialport (char *name)
+int uart_find_serial_port (char *name)
 {
     BYTE *pbuf = NULL;
     DWORD reqSize = 0;
