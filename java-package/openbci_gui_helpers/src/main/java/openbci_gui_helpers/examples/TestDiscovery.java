@@ -2,7 +2,7 @@ package openbci_gui_helpers.examples;
 
 import openbci_gui_helpers.GUIHelper;
 import openbci_gui_helpers.GanglionError;
-import openbci_gui_helpers.GUIHelper.GanglionDevice;
+import openbci_gui_helpers.GanglionDevice;
 
 public class TestDiscovery {
 

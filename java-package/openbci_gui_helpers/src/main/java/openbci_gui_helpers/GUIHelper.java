@@ -12,11 +12,6 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 public class GUIHelper {
-    public class GanglionDevice {
-        public int firmware_version;
-        public String identifier;
-        public String mac_address;
-    }
 
     private interface DllInterface extends Library {
         int scan_for_ganglions(String serial_port, int timeout_sec, byte[] output, int[] output_len);
