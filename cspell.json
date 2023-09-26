@@ -1,0 +1,39 @@
+{
+    "version": "0.2",
+    "language": "en",
+    // Words to be considered correct that CSpell will not flag.
+    "words": [
+        "gson",
+        "dylib",
+        "bglib",
+        "uart",
+        "hwaddr",
+        "APITYPES",
+        "PACKSTRUCT",
+        "anglion",
+        "lolen",
+        "simblee",
+        "openbci",
+        "simpleble",
+        "rdparty"
+    ],
+    // These words will always be flagged as incorrect.
+    "flagWords": [],
+    "ignorePaths": [
+        ".vscode",
+        ".git",
+        ".github",
+        ".clang-format",
+        ".gitignore",
+        "cspell.json",
+        "build",
+        "compiled",
+        "3rdparty",
+        "cmake/default.cmake",
+        "CMakeLists.txt",
+        "modules/bglib/include/cmd_def.h",
+        "modules/bglib/src/cmd_def.cpp",
+        "modules/bglib/src/stubs.cpp",
+        "modules/bglib/src/uart.cpp"
+    ]
+}
